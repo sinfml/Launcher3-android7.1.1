@@ -122,9 +122,9 @@ public class Workspace extends PagedView
     private long mCustomContentShowTime = -1;
 
     private LayoutTransition mLayoutTransition;
-    @Thunk final WallpaperManager mWallpaperManager;
+    @Thunk final WallpaperManager mWallpaperManager;// 提供系统桌面壁纸
 
-    private ShortcutAndWidgetContainer mDragSourceInternal;
+    private ShortcutAndWidgetContainer mDragSourceInternal;// 快捷方式和小部件容器
 
     @Thunk LongArrayMap<CellLayout> mWorkspaceScreens = new LongArrayMap<>();
     @Thunk ArrayList<Long> mScreenOrder = new ArrayList<Long>();
@@ -135,7 +135,7 @@ public class Workspace extends PagedView
     /**
      * CellInfo for the cell that is currently being dragged
      */
-    private CellLayout.CellInfo mDragInfo;
+    private CellLayout.CellInfo mDragInfo;// 正在拖拽的图标
 
     /**
      * Target drop area calculated during last acceptDrop call.
@@ -706,6 +706,7 @@ public class Workspace extends PagedView
 
         // Inflate the cell layout, but do not add it automatically so that we can get the newly
         // created CellLayout.
+        // 加载CellLayout的布局
         CellLayout newScreen = (CellLayout) mLauncher.getLayoutInflater().inflate(
                         R.layout.workspace_screen, this, false /* attachToRoot */);
         newScreen.setOnLongClickListener(mLongClickListener);
@@ -3653,6 +3654,7 @@ public class Workspace extends PagedView
     /**
      * Called at the end of a drag which originated on the workspace.
      */
+    // 拖动一个items完成时执行
     public void onDropCompleted(final View target, final DragObject d,
             final boolean isFlingToDelete, final boolean success) {
         if (mDeferDropAfterUninstall) {
@@ -3751,7 +3753,7 @@ public class Workspace extends PagedView
     }
 
     @Override
-    public boolean supportsFlingToDelete() {
+    public boolean supportsFlingToDelete() {// 这个源支持拖动items到删除框
         return true;
     }
 
@@ -3771,7 +3773,7 @@ public class Workspace extends PagedView
     }
 
     @Override
-    public void onFlingToDeleteCompleted() {
+    public void onFlingToDeleteCompleted() {// 拖一下items到删除框
         // Do nothing
     }
 

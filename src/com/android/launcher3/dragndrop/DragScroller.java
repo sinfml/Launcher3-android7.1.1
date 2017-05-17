@@ -18,11 +18,11 @@ package com.android.launcher3.dragndrop;
 
 /**
  * Handles scrolling while dragging
- *
+ * 控制滑动的接口
  */
 public interface DragScroller {
-    void scrollLeft();
-    void scrollRight();
+    void scrollLeft();// 左滑
+    void scrollRight();// 右滑
 
     /**
      * The touch point has entered the scroll area; a scroll is imminent.
@@ -30,11 +30,11 @@ public interface DragScroller {
      *
      * @param direction The scroll direction
      */
-    boolean onEnterScrollArea(int x, int y, int direction);
+    boolean onEnterScrollArea(int x, int y, int direction);// 进入滑动区域
 
     /**
      * The touch point has left the scroll area.
      * NOTE: This may not be called, if a drop occurs inside the scroll area.
      */
-    boolean onExitScrollArea();
+    boolean onExitScrollArea();// 退出滑动区域
 }

@@ -140,6 +140,12 @@ import java.util.List;
 /**
  * Default launcher application.
  */
+/*
+* Launcher的主入口
+* Launcher启动时需要加载桌面数据，这些数据的形成需要需要LauncherModel完成。
+* LauncherModel：Launcher的数据中心
+* IconCache：图片缓存区（应用程序的图标，桌面小部件的预览图）
+* */
 public class Launcher extends Activity
         implements LauncherExterns, View.OnClickListener, OnLongClickListener,
                    LauncherModel.Callbacks, View.OnTouchListener, LauncherProviderChangeListener,
@@ -147,6 +153,7 @@ public class Launcher extends Activity
     public static final String TAG = "Launcher";
     static final boolean LOGD = false;
 
+    // debug模式下的标记，控制debug模式时执行
     static final boolean DEBUG_WIDGETS = false;
     static final boolean DEBUG_STRICT_MODE = false;
     static final boolean DEBUG_RESUME_TIME = false;
@@ -368,7 +375,7 @@ public class Launcher extends Activity
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        if (DEBUG_STRICT_MODE) {
+        if (DEBUG_STRICT_MODE) { // 判断是否是debug模式
             StrictMode.setThreadPolicy(new StrictMode.ThreadPolicy.Builder()
                     .detectDiskReads()
                     .detectDiskWrites()

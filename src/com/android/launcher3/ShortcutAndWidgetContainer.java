@@ -23,6 +23,9 @@ import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
 
+/*
+* 快捷方式和小部件容器
+* */
 public class ShortcutAndWidgetContainer extends ViewGroup {
     static final String TAG = "CellLayoutChildren";
 

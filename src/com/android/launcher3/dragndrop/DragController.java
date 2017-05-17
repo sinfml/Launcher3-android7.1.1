@@ -143,12 +143,12 @@ public class DragController implements DragDriver.EventListener, TouchController
          * @param dragObject The object being dragged
          * @param options Options used to start the drag
          */
-        void onDragStart(DropTarget.DragObject dragObject, DragOptions options);
+        void onDragStart(DropTarget.DragObject dragObject, DragOptions options);// 拖动图标开始时执行的方法
 
         /**
          * The drag has ended
          */
-        void onDragEnd();
+        void onDragEnd();// 拖动图标结束时执行的方法
     }
 
     /**

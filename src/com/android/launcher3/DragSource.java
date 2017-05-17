@@ -23,13 +23,14 @@ import com.android.launcher3.logging.UserEventDispatcher.LaunchSourceProvider;
 
 /**
  * Interface defining an object that can originate a drag.
+ * 拖拽源
  */
 public interface DragSource extends LaunchSourceProvider {
 
     /**
      * @return whether items dragged from this source supports
      */
-    boolean supportsFlingToDelete();
+    boolean supportsFlingToDelete();// 是否这个源支持拖动items到删除框
 
     /**
      * @return whether items dragged from this source supports 'App Info'
@@ -52,11 +53,11 @@ public interface DragSource extends LaunchSourceProvider {
      * to be deleted on a DropTarget.  In such a situation, this method will be called after
      * onDropCompleted, and more importantly, after the fling animation has completed.
      */
-    void onFlingToDeleteCompleted();
+    void onFlingToDeleteCompleted();// 拖items到删除框
 
     /**
      * A callback made back to the source after an item from this source has been dropped on a
      * DropTarget.
      */
-    void onDropCompleted(View target, DragObject d, boolean isFlingToDelete, boolean success);
+    void onDropCompleted(View target, DragObject d, boolean isFlingToDelete, boolean success);// 拖动一个items完成时执行
 }

@@ -27,6 +27,9 @@ import com.android.launcher3.accessibility.DragViewStateAnnouncer;
  * Interface defining an object that can receive a drag.
  *
  */
+/*
+* 实现了这个接口的对象是一个可以放置被拖动对象的容器
+* */
 public interface DropTarget {
 
     class DragObject {
@@ -119,13 +122,13 @@ public interface DropTarget {
      * @param dragInfo Data associated with the object being dragged
      *
      */
-    void onDrop(DragObject dragObject);
+    void onDrop(DragObject dragObject);// 图标最终被放到一个DropTarget时的回调方法
 
-    void onDragEnter(DragObject dragObject);
+    void onDragEnter(DragObject dragObject);// 图标拖动到一个DropTarget时的回调方法
 
-    void onDragOver(DragObject dragObject);
+    void onDragOver(DragObject dragObject);// 图标在上一次位置和这一次位置所处的DropTarget相同的时候的回调方法。
 
-    void onDragExit(DragObject dragObject);
+    void onDragExit(DragObject dragObject);// 图标被拖出DropTarget时的回调方法。
 
     /**
      * Handle an object being dropped as a result of flinging to delete and will be called in place

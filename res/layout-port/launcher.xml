@@ -24,6 +24,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
+    <!-- 用于捕捉拖拽、点击等事件 -->
     <com.android.launcher3.dragndrop.DragLayer
         android:id="@+id/drag_layer"
         android:clipChildren="false"
@@ -35,6 +36,7 @@
 
         <!-- The workspace contains 5 screens of cells -->
         <!-- DO NOT CHANGE THE ID -->
+        <!-- 第一级桌面，负责左右页面滑动 -->
         <com.android.launcher3.Workspace
             android:id="@+id/workspace"
             android:layout_width="match_parent"
@@ -44,18 +46,21 @@
         </com.android.launcher3.Workspace>
 
         <!-- DO NOT CHANGE THE ID -->
+        <!-- 底部不随页面滑动的几个快捷方式 -->
         <include layout="@layout/hotseat"
             android:id="@+id/hotseat"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             launcher:layout_ignoreInsets="true" />
 
+        <!-- 长按屏幕时出现选择壁纸、选择widget和设置的布局 -->
         <include layout="@layout/overview_panel"
             android:id="@+id/overview_panel"
             android:visibility="gone" />
 
         <!-- Keep these behind the workspace so that they are not visible when
              we go into AllApps -->
+        <!-- 圆形指示器 -->
         <include layout="@layout/page_indicator"
             android:id="@+id/page_indicator" />
 
@@ -73,6 +78,7 @@
             android:layout_height="match_parent"
             android:visibility="invisible" />
 
+        <!-- 所有应用界面 -->
         <include layout="@layout/all_apps"
             android:id="@+id/apps_view"
             android:layout_width="match_parent"

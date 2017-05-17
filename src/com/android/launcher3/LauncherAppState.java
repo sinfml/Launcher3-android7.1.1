@@ -36,6 +36,11 @@ import com.android.launcher3.util.Thunk;
 
 import java.lang.ref.WeakReference;
 
+/*
+* LauncherModel：launcher的数据中心
+* IconCache：图片缓存区（应用程序的图标，桌面小部件的预览图）
+* AppFilter：应用程序的筛选（筛选需要展示的应用程序）
+* */
 public class LauncherAppState {
 
     public static final boolean PROFILE_STARTUP = ProviderConfig.IS_DOGFOOD_BUILD;
@@ -96,15 +101,16 @@ public class LauncherAppState {
         }
 
         mInvariantDeviceProfile = new InvariantDeviceProfile(sContext);
-        mIconCache = new IconCache(sContext, mInvariantDeviceProfile);
+        mIconCache = new IconCache(sContext, mInvariantDeviceProfile);// 创建图片缓存
         mWidgetCache = new WidgetPreviewLoader(sContext, mIconCache);
         mDeepShortcutManager = new DeepShortcutManager(sContext, new ShortcutCache());
 
-        mAppFilter = AppFilter.loadByName(sContext.getString(R.string.app_filter_class));
+        mAppFilter = AppFilter.loadByName(sContext.getString(R.string.app_filter_class));// 创建应用程序筛选器
         mModel = new LauncherModel(this, mIconCache, mAppFilter, mDeepShortcutManager);
 
         LauncherAppsCompat.getInstance(sContext).addOnAppsChangedCallback(mModel);
 
+        // LauncherModel是广播接收器的子类，所以为其设置一些广播，使得能够处理自己的广播。
         // Register intent receivers
         IntentFilter filter = new IntentFilter();
         filter.addAction(Intent.ACTION_LOCALE_CHANGED);

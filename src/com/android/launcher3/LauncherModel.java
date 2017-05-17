@@ -99,6 +99,14 @@ import java.util.concurrent.Executor;
  * LauncherModel object held in a static. Also provide APIs for updating the database state
  * for the Launcher.
  */
+
+/**
+* launcher的数据中心，主要功能是对外接收并处里来自包管理服务的一些广播（如应用程序的安装，卸载，更新）以及桌面内容的加载等
+* IconCache：图片缓存区（应用程序的图标，桌面小部件的预览图）
+* AppFilter：应用程序的筛选（筛选需要展示的应用程序）
+* Callbacks：回调接口,Launcher的组件通过接口回调的方式将Launcher中保存的数据，以及相关状态的变化情况通知Launcher
+*
+*/
 public class LauncherModel extends BroadcastReceiver
         implements LauncherAppsCompat.OnAppsChangedCallbackCompat {
     static final boolean DEBUG_LOADERS = false;
@@ -200,6 +208,7 @@ public class LauncherModel extends BroadcastReceiver
     private final LauncherAppsCompat mLauncherApps;
     private final UserManagerCompat mUserManager;
 
+    // 回调接口,Launcher的组件通过接口回调的方式将Launcher中保存的数据，以及相关状态的变化情况通知Launcher
     public interface Callbacks {
         public boolean setLoadOnResume();
         public int getCurrentWorkspaceScreen();
@@ -242,7 +251,7 @@ public class LauncherModel extends BroadcastReceiver
         mApp = app;
         mBgAllAppsList = new AllAppsList(iconCache, appFilter);
         mBgWidgetsModel = new WidgetsModel(context, iconCache, appFilter);
-        mIconCache = iconCache;
+        mIconCache = iconCache;//创建图片缓存
         mDeepShortcutManager = deepShortcutManager;
 
         mLauncherApps = LauncherAppsCompat.getInstance(context);
@@ -365,6 +374,7 @@ public class LauncherModel extends BroadcastReceiver
         runOnWorkerThread(updateRunnable);
     }
 
+    //
     public void addAppsToAllApps(final Context ctx, final ArrayList<AppInfo> allAppsApps) {
         final Callbacks callbacks = getCallback();
 
@@ -1662,11 +1672,13 @@ public class LauncherModel extends BroadcastReceiver
 
             final Context context = mContext;
             final ContentResolver contentResolver = context.getContentResolver();
+            // 获取包管理服务，并查询当前是否处于安全模式
             final PackageManager manager = context.getPackageManager();
             final boolean isSafeMode = manager.isSafeMode();
+            // 获取Launcher定制的应用程序管理接口
             final LauncherAppsCompat launcherApps = LauncherAppsCompat.getInstance(context);
             final boolean isSdCardReady = Utilities.isBootCompleted();
-
+            // 获取当前设备特征：桌面如何被划分（多少行，多少列）
             LauncherAppState app = LauncherAppState.getInstance();
             InvariantDeviceProfile profile = app.getInvariantDeviceProfile();
             int countX = profile.numColumns;

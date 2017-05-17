@@ -62,6 +62,9 @@ import java.util.Stack;
 /**
  * Cache of application icons.  Icons can be made from any thread.
  */
+/*
+* 图片缓存区（应用程序的图标，桌面小部件的预览图）
+* */
 public class IconCache {
 
     private static final String TAG = "Launcher.IconCache";
