@@ -25,6 +25,7 @@ import android.view.ViewGroup;
 
 /*
 * 快捷方式和小部件容器
+* 主要是调用onMeasure（）和onLayout（）函数对添加的item进行测量和布局。
 * */
 public class ShortcutAndWidgetContainer extends ViewGroup {
     static final String TAG = "CellLayoutChildren";
@@ -89,7 +90,7 @@ public class ShortcutAndWidgetContainer extends ViewGroup {
         for (int i = 0; i < count; i++) {
             View child = getChildAt(i);
             if (child.getVisibility() != GONE) {
-                measureChild(child);
+                measureChild(child);//对子对象进行测量。
             }
         }
     }
@@ -126,8 +127,8 @@ public class ShortcutAndWidgetContainer extends ViewGroup {
         final int cellHeight = mCellHeight;
         CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
         if (!lp.isFullscreen) {
-            lp.setup(cellWidth, cellHeight, mWidthGap, mHeightGap, invertLayoutHorizontally(),
-                    mCountX);
+            // 把计算的结果封装到LayoutParams中，用于布局item的时候进行调用
+            lp.setup(cellWidth, cellHeight, mWidthGap, mHeightGap, invertLayoutHorizontally(), mCountX);// 核心代码
 
             if (child instanceof LauncherAppWidgetHostView) {
                 // Widgets have their own padding, so skip
@@ -162,7 +163,7 @@ public class ShortcutAndWidgetContainer extends ViewGroup {
                 CellLayout.LayoutParams lp = (CellLayout.LayoutParams) child.getLayoutParams();
                 int childLeft = lp.x;
                 int childTop = lp.y;
-                child.layout(childLeft, childTop, childLeft + lp.width, childTop + lp.height);
+                child.layout(childLeft, childTop, childLeft + lp.width, childTop + lp.height);//对子对象进行布局。
 
                 if (lp.dropped) {
                     lp.dropped = false;

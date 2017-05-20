@@ -1312,6 +1312,9 @@ public class LauncherModel extends BroadcastReceiver
     /**
      * Starts the loader. Tries to bind {@params synchronousBindPage} synchronously if possible.
      * @return true if the page could be bound synchronously.
+     * 加载数据
+     * startLoader()函数的核心代码是线程类LoaderTask,该类中有两条路径进行应用数据的加载，
+     * 其中一个路径是runBindSynchronousPage（），这个方法作用是重新绑定桌面的应用。第二种路径是LoaderTask线程类的run（）方法。
      */
     public boolean startLoader(int synchronousBindPage) {
         // Enable queue before starting loader. It will get disabled in Launcher#finishBindingItems
@@ -1337,7 +1340,7 @@ public class LauncherModel extends BroadcastReceiver
                     return true;
                 } else {
                     sWorkerThread.setPriority(Thread.NORM_PRIORITY);
-                    sWorker.post(mLoaderTask);
+                    sWorker.post(mLoaderTask);// 数据需要重新加载时执行，例如开机重启。
                 }
             }
         }
@@ -1384,6 +1387,10 @@ public class LauncherModel extends BroadcastReceiver
             mPageToBindFirst = pageToBindFirst;
         }
 
+        /**
+         * loadAndBindWorkspace()中，先是执行loadWorkspace()方法进行workspace中的应用信息的加载(从数据库中加载)，
+         * 然后执行bindWorkspace()方法将应用信息绑定到workspace中。
+         */
         private void loadAndBindWorkspace() {
             mIsLoadingAndBindingWorkspace = true;
 
@@ -1393,7 +1400,7 @@ public class LauncherModel extends BroadcastReceiver
             }
 
             if (!mWorkspaceLoaded) {
-                loadWorkspace();
+                loadWorkspace();// 进行workspace中的应用信息的加载(从数据库中加载)
                 synchronized (LoaderTask.this) {
                     if (mStopped) {
                         return;
@@ -1403,7 +1410,7 @@ public class LauncherModel extends BroadcastReceiver
             }
 
             // Bind the workspace
-            bindWorkspace(mPageToBindFirst);
+            bindWorkspace(mPageToBindFirst);// 将应用信息绑定到workspace中
         }
 
         private void waitForIdle() {
@@ -1480,6 +1487,10 @@ public class LauncherModel extends BroadcastReceiver
             bindDeepShortcuts();
         }
 
+        /**
+         * 在run()方法中，先是执行loadAndBindWorkspace()方法进行workspace的加载，
+         * 然后执行loadAndBindAllApps()方法进行所有的app的加载。
+         */
         public void run() {
             synchronized (mLock) {
                 if (mStopped) {
@@ -1492,7 +1503,7 @@ public class LauncherModel extends BroadcastReceiver
             // workspace first (default).
             keep_running: {
                 if (DEBUG_LOADERS) Log.d(TAG, "step 1: loading workspace");
-                loadAndBindWorkspace();
+                loadAndBindWorkspace();// 进行workspace的加载
 
                 if (mStopped) {
                     break keep_running;
@@ -1664,6 +1675,10 @@ public class LauncherModel extends BroadcastReceiver
             }
         }
 
+        /*
+        * loadWorkspace()方法中，先是从数据库中查询所有的应用信息，然后生成一个shortcutInfo对象，
+        * 添加到sBgWorkspaceItems列表中，该列表在后面bindWorkspace()方法中会被用到。
+        * */
         private void loadWorkspace() {
             if (LauncherAppState.PROFILE_STARTUP) {
                 Trace.beginSection("Loading Workspace");
@@ -2500,8 +2515,7 @@ public class LauncherModel extends BroadcastReceiver
                     public void run() {
                         Callbacks callbacks = tryGetCallbacks(oldCallbacks);
                         if (callbacks != null) {
-                            callbacks.bindItems(workspaceItems, start, start+chunkSize,
-                                    false);
+                            callbacks.bindItems(workspaceItems, start, start+chunkSize, false);// 核心代码
                         }
                     }
                 };
@@ -2527,6 +2541,7 @@ public class LauncherModel extends BroadcastReceiver
         /**
          * Binds all loaded data to actual views on the main thread.
          */
+        // 该方法将数据绑定到workspace中
         private void bindWorkspace(int synchronizeBindPage) {
             final long t = SystemClock.uptimeMillis();
             Runnable r;
@@ -2541,11 +2556,13 @@ public class LauncherModel extends BroadcastReceiver
             }
 
             // Save a copy of all the bg-thread collections
-            ArrayList<ItemInfo> workspaceItems = new ArrayList<>();
+            ArrayList<ItemInfo> workspaceItems = new ArrayList<>(); //该列表保存的是所有显示到workspace的应用的信息
             ArrayList<LauncherAppWidgetInfo> appWidgets = new ArrayList<>();
             ArrayList<Long> orderedScreenIds = new ArrayList<>();
 
             synchronized (sBgLock) {
+                //sBgWorkspaceItems是在上一个loadWorkspace（）方法中保存的所有的应用的信息，把它全部添加到
+                //workspaceItems这个列表中
                 workspaceItems.addAll(sBgWorkspaceItems);
                 appWidgets.addAll(sBgAppWidgets);
                 orderedScreenIds.addAll(sBgWorkspaceScreens);
@@ -2566,13 +2583,13 @@ public class LauncherModel extends BroadcastReceiver
                     validFirstPage ? orderedScreenIds.get(currentScreen) : INVALID_SCREEN_ID;
 
             // Separate the items that are on the current screen, and all the other remaining items
-            ArrayList<ItemInfo> currentWorkspaceItems = new ArrayList<>();
-            ArrayList<ItemInfo> otherWorkspaceItems = new ArrayList<>();
+            ArrayList<ItemInfo> currentWorkspaceItems = new ArrayList<>();//保存的是当前页的workspace的应用信息
+            ArrayList<ItemInfo> otherWorkspaceItems = new ArrayList<>();//保存的是其他页的workspace的应用信息
             ArrayList<LauncherAppWidgetInfo> currentAppWidgets = new ArrayList<>();
             ArrayList<LauncherAppWidgetInfo> otherAppWidgets = new ArrayList<>();
 
             filterCurrentWorkspaceItems(currentScreenId, workspaceItems, currentWorkspaceItems,
-                    otherWorkspaceItems);
+                    otherWorkspaceItems);//筛选信息保存到currentWorkspaceItems，otherWorkspaceItems两个列表中。
             filterCurrentAppWidgets(currentScreenId, appWidgets, currentAppWidgets,
                     otherAppWidgets);
             sortWorkspaceItemsSpatially(currentWorkspaceItems);
@@ -2594,6 +2611,7 @@ public class LauncherModel extends BroadcastReceiver
 
             Executor mainExecutor = new DeferredMainThreadExecutor();
             // Load items on the current page.
+            // 绑定属于当前workspace的元素到workspace中
             bindWorkspaceItems(oldCallbacks, currentWorkspaceItems, currentAppWidgets, mainExecutor);
 
             // In case of validFirstPage, only bind the first screen, and defer binding the
@@ -2615,6 +2633,7 @@ public class LauncherModel extends BroadcastReceiver
                 }
             });
 
+            //绑定属于其他workspace的元素到workspace中
             bindWorkspaceItems(oldCallbacks, otherWorkspaceItems, otherAppWidgets, deferredExecutor);
 
             // Tell the workspace that we're done binding items
@@ -2666,6 +2685,7 @@ public class LauncherModel extends BroadcastReceiver
             }
         }
 
+        // 在该方法中，如果应用没有被加载，则执行loadAllApps()方法进行应用的重新加载，否则只是执行onlyBindAllApps()方法进行应用的绑定。
         private void loadAndBindAllApps() {
             if (DEBUG_LOADERS) {
                 Log.d(TAG, "loadAndBindAllApps mAllAppsLoaded=" + mAllAppsLoaded);
@@ -2738,6 +2758,7 @@ public class LauncherModel extends BroadcastReceiver
             runOnMainThread(r);
         }
 
+        // 该方法获取所有的应用的信息，最后调用bindAllApplications(added)接口把应用的信息绑定到Launcher中,该接口的实现是在Launcher.java中
         private void loadAllApps() {
             final long loadTime = DEBUG_LOADERS ? SystemClock.uptimeMillis() : 0;
 
@@ -2755,6 +2776,7 @@ public class LauncherModel extends BroadcastReceiver
             for (UserHandleCompat user : profiles) {
                 // Query for the set of apps
                 final long qiaTime = DEBUG_LOADERS ? SystemClock.uptimeMillis() : 0;
+                //系统中查询该类型的intent的所有的app
                 final List<LauncherActivityInfoCompat> apps = mLauncherApps.getActivityList(null, user);
                 if (DEBUG_LOADERS) {
                     Log.d(TAG, "getActivityList took "
@@ -2771,6 +2793,7 @@ public class LauncherModel extends BroadcastReceiver
                 for (int i = 0; i < apps.size(); i++) {
                     LauncherActivityInfoCompat app = apps.get(i);
                     // This builds the icon bitmaps.
+                    // 所有的应用生成AppInfo并添加到mBgAllAppsList列表中
                     mBgAllAppsList.add(new AppInfo(mContext, app, user, mIconCache, quietMode));
                 }
 
@@ -2801,6 +2824,7 @@ public class LauncherModel extends BroadcastReceiver
                 }
             }
             // Huh? Shouldn't this be inside the Runnable below?
+            // 获取所有的已经添加的应用的信息到added列表中
             final ArrayList<AppInfo> added = mBgAllAppsList.added;
             mBgAllAppsList.added = new ArrayList<AppInfo>();
 

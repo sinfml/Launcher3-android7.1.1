@@ -448,7 +448,7 @@ public class Launcher extends Activity
 
         // We only load the page synchronously if the user rotates (or triggers a
         // configuration change) while launcher is in the foreground
-        if (!mModel.startLoader(mWorkspace.getRestorePage())) {
+        if (!mModel.startLoader(mWorkspace.getRestorePage())) {// 调用LauncherModel中的startLoader()加载数据
             // If we are not binding synchronously, show a fade in animation when
             // the first page bind completes.
             mDragLayer.setAlpha(0);
@@ -3686,6 +3686,7 @@ public class Launcher extends Activity
                 case LauncherSettings.Favorites.ITEM_TYPE_APPLICATION:
                 case LauncherSettings.Favorites.ITEM_TYPE_SHORTCUT:
                 case LauncherSettings.Favorites.ITEM_TYPE_DEEP_SHORTCUT:
+                    // 创建新的应用图标的快捷方式。
                     ShortcutInfo info = (ShortcutInfo) item;
                     view = createShortcut(info);
                     break;
@@ -3717,6 +3718,7 @@ public class Launcher extends Activity
                     }
                 }
             }
+            //把快捷方式添加到屏幕中对应位置
             workspace.addInScreenFromBind(view, item.container, item.screenId, item.cellX,
                     item.cellY, 1, 1);
             if (animateIcons) {

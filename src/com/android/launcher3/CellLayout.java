@@ -628,6 +628,7 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
         return mIsHotseat;
     }
 
+    // 该函数实现把Item对象添加到CellLayout中
     public boolean addViewToCellLayout(View child, int index, int childId, LayoutParams params,
             boolean markCells) {
         final LayoutParams lp = params;
@@ -653,7 +654,9 @@ public class CellLayout extends ViewGroup implements BubbleTextShadowHandler {
             if (LOGD) {
                 Log.d(TAG, "Adding view to ShortcutsAndWidgetsContainer: " + child);
             }
-            mShortcutsAndWidgets.addView(child, index, lp);
+            // mShortcutsAndWidgets对象是CellLayout中最终添加shortcut的容器，调用addView（）函数，
+            // 最终根据参数lp把shortcut添加到容器中。
+            mShortcutsAndWidgets.addView(child, index, lp);// 核心代码
 
             if (markCells) markCellsAsOccupiedForView(child);
 

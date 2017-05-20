@@ -62,9 +62,11 @@ import java.util.Stack;
 /**
  * Cache of application icons.  Icons can be made from any thread.
  */
-/*
+/**
 * 图片缓存区（应用程序的图标，桌面小部件的预览图）
-* */
+ * 1.charSequence是一个接口，表示char值的一个可读序列,即一个有序字符集合。其实现类有：CharBuffer、String、StringBuffer、StringBuilder
+ *
+*/
 public class IconCache {
 
     private static final String TAG = "Launcher.IconCache";
@@ -81,9 +83,10 @@ public class IconCache {
 
     @Thunk static final Object ICON_UPDATE_TOKEN = new Object();
 
+    // 对应一个应用，包过应用的图标,名称,描述
     @Thunk static class CacheEntry {
         public Bitmap icon;
-        public CharSequence title = "";
+        public CharSequence title = ""; //1.
         public CharSequence contentDescription = "";
         public boolean isLowResIcon;
     }
@@ -140,10 +143,12 @@ public class IconCache {
         mLowResOptions.inPreferredConfig = Bitmap.Config.RGB_565;
     }
 
+    // 绘制系统默认图标
     private Drawable getFullResDefaultActivityIcon() {
         return getFullResIcon(Resources.getSystem(), android.R.mipmap.sym_def_app_icon);
     }
 
+    // 根据资源绘制指定图标
     private Drawable getFullResIcon(Resources resources, int iconId) {
         Drawable d;
         try {
@@ -155,6 +160,7 @@ public class IconCache {
         return (d != null) ? d : getFullResDefaultActivityIcon();
     }
 
+    // 根据包名绘制图标
     public Drawable getFullResIcon(String packageName, int iconId) {
         Resources resources;
         try {
@@ -442,6 +448,7 @@ public class IconCache {
 
     /**
      * Fill in "application" with the icon and label for "info."
+     * 获取应用的title和icon等
      */
     public synchronized void getTitleAndIcon(AppInfo application,
             LauncherActivityInfoCompat info, boolean useLowResIcon) {
@@ -546,11 +553,13 @@ public class IconCache {
     /**
      * Retrieves the entry from the cache. If the entry is not present, it creates a new entry.
      * This method is not thread safe, it must be called from a synchronized method.
+     * 添加图标的关键方法
+     * 首先从我们的缓存中获取，如果有就直接返回，如果没有就去获取。获取title也一样，先从缓存中获取，如果有就使用，如果没有就从应用的信息中获取。
      */
     private CacheEntry cacheLocked(ComponentName componentName, LauncherActivityInfoCompat info,
             UserHandleCompat user, boolean usePackageIcon, boolean useLowResIcon) {
         ComponentKey cacheKey = new ComponentKey(componentName, user);
-        CacheEntry entry = mCache.get(cacheKey);
+        CacheEntry entry = mCache.get(cacheKey);// 从缓存中读取文件
         if (entry == null || (entry.isLowResIcon && !useLowResIcon)) {
             entry = new CacheEntry();
             mCache.put(cacheKey, entry);
@@ -558,6 +567,7 @@ public class IconCache {
             // Check the DB first.
             if (!getEntryFromDB(cacheKey, entry, useLowResIcon) || DEBUG_IGNORE_CACHE) {
                 if (info != null) {
+                    // 获取icon
                     entry.icon = Utilities.createBadgedIconBitmap(
                             mIconProvider.getIcon(info, mIconDpi), info.getUser(),
                             mContext);
