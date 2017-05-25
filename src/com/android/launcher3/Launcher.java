@@ -4068,6 +4068,13 @@ public class Launcher extends Activity
         if (mAppsView != null) {
             mAppsView.setApps(apps);
         }
+
+        ArrayList<ShortcutInfo> shortcutList = new ArrayList<>();
+        for (int i=0;i<apps.size();i++ ){
+            shortcutList.add(apps.get(i).makeShortcut());
+        }
+        mModel.addAndBindAddedWorkspaceItems(getApplicationContext(),shortcutList);
+
         if (mLauncherCallbacks != null) {
             mLauncherCallbacks.bindAllApplications(apps);
         }

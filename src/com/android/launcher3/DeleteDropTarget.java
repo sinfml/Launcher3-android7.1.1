@@ -64,7 +64,9 @@ public class DeleteDropTarget extends ButtonDropTarget {
 
     @Override
     protected boolean supportsDrop(DragSource source, ItemInfo info) {
-        return true;
+//        return true;
+        return false;
+
     }
 
     /**

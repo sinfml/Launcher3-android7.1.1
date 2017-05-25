@@ -142,9 +142,14 @@ public class InstallShortcutReceiver extends BroadcastReceiver {
     private static boolean mUseInstallQueue = false;
 
     public void onReceive(Context context, Intent data) {
-        if (!ACTION_INSTALL_SHORTCUT.equals(data.getAction())) {
+//        if (!ACTION_INSTALL_SHORTCUT.equals(data.getAction())) {
+//            return;
+//        }
+
+        if (ACTION_INSTALL_SHORTCUT.equals(data.getAction())) {
             return;
         }
+
         PendingInstallShortcutInfo info = createPendingInfo(context, data);
         if (info != null) {
             if (!info.isLauncherActivity()) {

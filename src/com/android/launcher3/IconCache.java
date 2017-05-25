@@ -554,7 +554,7 @@ public class IconCache {
      * Retrieves the entry from the cache. If the entry is not present, it creates a new entry.
      * This method is not thread safe, it must be called from a synchronized method.
      * 添加图标的关键方法
-     * 首先从我们的缓存中获取，如果有就直接返回，如果没有就去获取。获取title也一样，先从缓存中获取，如果有就使用，如果没有就从应用的信息中获取。
+     * 首先从缓存中获取，如果有就直接返回，如果没有就去获取。获取title也一样，先从缓存中获取，如果有就使用，如果没有就从应用的信息中获取。
      */
     private CacheEntry cacheLocked(ComponentName componentName, LauncherActivityInfoCompat info,
             UserHandleCompat user, boolean usePackageIcon, boolean useLowResIcon) {

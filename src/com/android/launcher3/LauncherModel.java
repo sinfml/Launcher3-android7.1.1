@@ -3090,6 +3090,17 @@ public class LauncherModel extends BroadcastReceiver
                     if (heuristic != null) {
                         heuristic.processPackageAdd(mPackages);
                     }
+
+                    ArrayList<ShortcutInfo> shortcutList = new ArrayList<>();
+                    for(int i=0;i<N;i++){
+                        LauncherAppsCompat launcherApps = LauncherAppsCompat.getInstance(context);
+                        List<LauncherActivityInfoCompat> matches = launcherApps.getActivityList(packages[i], mUser);
+                        for (LauncherActivityInfoCompat info : matches) {
+                            ShortcutInfo sh = new AppInfo(context, info, mUser, mIconCache).makeShortcut();shortcutList.add(sh);
+                        }
+                    }
+                    addAndBindAddedWorkspaceItems(context,shortcutList);
+
                     break;
                 }
                 case OP_UPDATE:
