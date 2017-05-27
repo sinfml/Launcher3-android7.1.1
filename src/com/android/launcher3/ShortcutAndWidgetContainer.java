@@ -23,7 +23,7 @@ import android.graphics.Rect;
 import android.view.View;
 import android.view.ViewGroup;
 
-/*
+/**
 * 快捷方式和小部件容器
 * 主要是调用onMeasure（）和onLayout（）函数对添加的item进行测量和布局。
 * */

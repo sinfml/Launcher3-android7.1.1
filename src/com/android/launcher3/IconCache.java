@@ -83,7 +83,9 @@ public class IconCache {
 
     @Thunk static final Object ICON_UPDATE_TOKEN = new Object();
 
-    // 对应一个应用，包过应用的图标,名称,描述
+    /**
+     * 对应一个应用，包过应用的图标,名称,描述
+     */
     @Thunk static class CacheEntry {
         public Bitmap icon;
         public CharSequence title = ""; //1.
@@ -143,12 +145,20 @@ public class IconCache {
         mLowResOptions.inPreferredConfig = Bitmap.Config.RGB_565;
     }
 
-    // 绘制系统默认图标
+    /**
+     * 绘制系统默认图标
+     * @return
+     */
     private Drawable getFullResDefaultActivityIcon() {
         return getFullResIcon(Resources.getSystem(), android.R.mipmap.sym_def_app_icon);
     }
 
-    // 根据资源绘制指定图标
+    /**
+     * 根据资源绘制指定图标
+     * @param resources
+     * @param iconId
+     * @return
+     */
     private Drawable getFullResIcon(Resources resources, int iconId) {
         Drawable d;
         try {
@@ -160,7 +170,12 @@ public class IconCache {
         return (d != null) ? d : getFullResDefaultActivityIcon();
     }
 
-    // 根据包名绘制图标
+    /**
+     * 根据包名绘制图标
+     * @param packageName
+     * @param iconId
+     * @return
+     */
     public Drawable getFullResIcon(String packageName, int iconId) {
         Resources resources;
         try {
@@ -176,6 +191,11 @@ public class IconCache {
         return getFullResDefaultActivityIcon();
     }
 
+    /**
+     * 根据ActivityInfo绘制图标
+     * @param info
+     * @return
+     */
     public Drawable getFullResIcon(ActivityInfo info) {
         Resources resources;
         try {
