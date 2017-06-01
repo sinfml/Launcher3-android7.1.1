@@ -66,7 +66,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Stack;
-/*
+/**
 * 一个Workspace由多个CellLayout组成,每一个CellLayout负责里面图标(favorite)和widget的显示.即滑动屏幕的每一页就是一个CellLayout.
 * CellLayout上有很多Cell,都有对应的坐标。一个item可以占多个Cell
 * */
