@@ -140,7 +140,7 @@ import java.util.List;
 /**
  * Default launcher application.
  */
-/*
+/**
 * Launcher的主入口
 * Launcher启动时需要加载桌面数据，这些数据的形成需要需要LauncherModel完成。
 * LauncherModel：Launcher的数据中心
@@ -218,6 +218,9 @@ public class Launcher extends Activity
     private static int NEW_APPS_ANIMATION_INACTIVE_TIMEOUT_SECONDS = 5;
     @Thunk static int NEW_APPS_ANIMATION_DELAY = 500;
 
+    /**
+     * 监听桌面小部件广播
+     */
     private final BroadcastReceiver mUiBroadcastReceiver = new BroadcastReceiver() {
 
         @Override

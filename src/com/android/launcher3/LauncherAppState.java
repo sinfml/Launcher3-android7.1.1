@@ -36,14 +36,14 @@ import com.android.launcher3.util.Thunk;
 
 import java.lang.ref.WeakReference;
 
-/*
+/**
 * LauncherModel：launcher的数据中心
 * IconCache：图片缓存区（应用程序的图标，桌面小部件的预览图）
 * AppFilter：应用程序的筛选（筛选需要展示的应用程序）
 * */
 public class LauncherAppState {
 
-    public static final boolean PROFILE_STARTUP = ProviderConfig.IS_DOGFOOD_BUILD;
+    public static final boolean PROFILE_STARTUP = ProviderConfig.IS_DOGFOOD_BUILD;//标志配置文件是否启动
 
     private final AppFilter mAppFilter;
     @Thunk final LauncherModel mModel;
@@ -100,7 +100,7 @@ public class LauncherAppState {
             TestingUtils.startTrackingMemory(sContext);
         }
 
-        mInvariantDeviceProfile = new InvariantDeviceProfile(sContext);
+        mInvariantDeviceProfile = new InvariantDeviceProfile(sContext);// 关于设备参数的类
         mIconCache = new IconCache(sContext, mInvariantDeviceProfile);// 创建图片缓存
         mWidgetCache = new WidgetPreviewLoader(sContext, mIconCache);
         mDeepShortcutManager = new DeepShortcutManager(sContext, new ShortcutCache());

@@ -57,10 +57,10 @@ public class IconProvider {
         return mSystemState;
     }
 
-    // 获取图标
+    // 获取图标存到缓存
     public Drawable getIcon(LauncherActivityInfoCompat info, int iconDpi) {
 
-        // 遍历集合，匹配包名，如何有相同则取图标
+        // 遍历集合，匹配包名，如果有相同则取图标
         Iterator iter = themIconMap.entrySet().iterator();
         while (iter.hasNext()){
             Map.Entry entry = (Map.Entry)iter.next();
@@ -73,7 +73,7 @@ public class IconProvider {
         return info.getIcon(iconDpi);
     }
 
-    // 获取zip包中的图片，存到HashMap中，key：String文件名  value: Drawable
+    // 获取zip包中的图片，存到HashMap中，key：String文件名中的包名部分  value: Drawable
     private void initThemeIcon (){
 
         File file = new File("/system/media/icon.zip");
@@ -91,30 +91,33 @@ public class IconProvider {
         }
 
         try {
-            zipIn = new ZipInputStream(new FileInputStream(file));
+            if(file != null){
+                zipIn = new ZipInputStream(new FileInputStream(file));
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
 
         try {
-            while ((zipEn = zipIn.getNextEntry()) != null) {
-                if (!zipEn.isDirectory()) {
-                    name = fileName(zipEn.getName());
-                    drawable = bitmap2Drawable(BitmapFactory.decodeStream(zipFile.getInputStream(zipEn)));
-                    Log.i(TAG,"zip--file name " + name);
-                    Log.i(TAG,"zip--drawable " + drawable);
-                    themIconMap.put(name,drawable);
+            if(zipFile != null){
+                while ((zipEn = zipIn.getNextEntry()) != null) {
+                    if (!zipEn.isDirectory()) {
+                        name = fileName(zipEn.getName());
+                        drawable = bitmap2Drawable(BitmapFactory.decodeStream(zipFile.getInputStream(zipEn)));
+                        Log.i(TAG,"zip--file name " + name);
+                        Log.i(TAG,"zip--drawable " + drawable);
+                        themIconMap.put(name,drawable);
+                    }
+                    zipIn.closeEntry();
                 }
-                zipIn.closeEntry();
             }
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-
     }
 
-    // 截取文件名
+    // 截取文件名(icon/com.qq.ddz.png)中的包名
     private String fileName(String name){
 
         String subset1;
