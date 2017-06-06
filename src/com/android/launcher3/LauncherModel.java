@@ -3091,6 +3091,7 @@ public class LauncherModel extends BroadcastReceiver
                         heuristic.processPackageAdd(mPackages);
                     }
 
+                    // 将新安装应用的图标添加到桌面
                     ArrayList<ShortcutInfo> shortcutList = new ArrayList<>();
                     for(int i=0;i<N;i++){
                         LauncherAppsCompat launcherApps = LauncherAppsCompat.getInstance(context);

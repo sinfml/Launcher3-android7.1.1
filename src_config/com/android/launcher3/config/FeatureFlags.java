@@ -35,7 +35,7 @@ public final class FeatureFlags {
     public static final boolean QSB_ON_FIRST_SCREEN = true;
     // When enabled the all-apps icon is not added to the hotseat.
 //    public static final boolean NO_ALL_APPS_ICON = false;
-    public static final boolean NO_ALL_APPS_ICON = true;
+    public static final boolean NO_ALL_APPS_ICON = true;//底部导航栏不显示进入所有应用界面的按钮
     // When enabled fling down gesture on the first workspace triggers search.
     public static final boolean PULLDOWN_SEARCH = false;
     // When enabled the status bar may show dark icons based on the top of the wallpaper.

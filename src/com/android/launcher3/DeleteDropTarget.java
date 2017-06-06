@@ -65,6 +65,7 @@ public class DeleteDropTarget extends ButtonDropTarget {
     @Override
     protected boolean supportsDrop(DragSource source, ItemInfo info) {
 //        return true;
+        // 禁止删除桌面图标，返回false拖动桌面图标，不出现移除选项
         return false;
 
     }
