@@ -113,7 +113,8 @@ public class Workspace extends PagedView
     // The screen id used for the empty screen always present to the right.
     public static final long EXTRA_EMPTY_SCREEN_ID = -201;
     // The is the first screen. It is always present, even if its empty.
-    public static final long FIRST_SCREEN_ID = 0;
+//    public static final long FIRST_SCREEN_ID = 0;
+    public static final long FIRST_SCREEN_ID = 10;// 使快捷方式图标从第一屏开始放置
 
     private final static long CUSTOM_CONTENT_SCREEN_ID = -301;
 
@@ -589,7 +590,7 @@ public class Workspace extends PagedView
             return;
         }
         // Add the first page
-        CellLayout firstPage = insertNewWorkspaceScreen(Workspace.FIRST_SCREEN_ID, 0);
+        CellLayout firstPage = insertNewWorkspaceScreen(Workspace.FIRST_SCREEN_ID,0);
         if (FeatureFlags.PULLDOWN_SEARCH) {
             firstPage.setOnTouchListener(new VerticalFlingDetector(mLauncher) {
                 // detect fling when touch started from empty space
@@ -627,8 +628,8 @@ public class Workspace extends PagedView
 //                    firstPage, false);
 //        }
 
-        CellLayout.LayoutParams lp = new CellLayout.LayoutParams(0, 0, firstPage.getCountX(), 1);
-        lp.canReorder = false;
+//        CellLayout.LayoutParams lp = new CellLayout.LayoutParams(0, 0, firstPage.getCountX(), 1);
+//        lp.canReorder = false;
 //        if (!firstPage.addViewToCellLayout(qsb, 0, getEmbeddedQsbId(), lp, true)) {
 //            Log.e(TAG, "Failed to add to item at (0, 0) to CellLayout");
 //        }
@@ -679,7 +680,7 @@ public class Workspace extends PagedView
         mWorkspaceScreens.clear();
 
         // Ensure that the first page is always present
-        bindAndInitFirstWorkspaceScreen(qsb);
+//        bindAndInitFirstWorkspaceScreen(qsb);
 
         // Re-enable the layout transitions
         enableLayoutTransitions();
