@@ -4072,6 +4072,7 @@ public class Launcher extends Activity
             mAppsView.setApps(apps);
         }
 
+        //+++
         ArrayList<ShortcutInfo> shortcutList = new ArrayList<>();
         for (int i=0;i<apps.size();i++ ){
             shortcutList.add(apps.get(i).makeShortcut());

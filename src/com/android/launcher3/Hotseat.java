@@ -86,6 +86,7 @@ public class Hotseat extends FrameLayout
         return mContent.getShortcutsAndWidgets().getChildCount() > 1;
     }
 
+
     /**
      * Registers the specified listener on the cell layout of the hotseat.
      */
@@ -126,6 +127,7 @@ public class Hotseat extends FrameLayout
     void resetLayout() {
         mContent.removeAllViewsInLayout();
 
+        // 在hotseat中显示进入所有应用列表的图标
         if (!FeatureFlags.NO_ALL_APPS_ICON) {
             // Add the Apps button
             Context context = getContext();

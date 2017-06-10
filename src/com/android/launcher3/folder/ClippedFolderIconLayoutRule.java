@@ -9,7 +9,7 @@ import com.android.launcher3.Utilities;
 
 public class ClippedFolderIconLayoutRule implements FolderIcon.PreviewLayoutRule {
 
-    static final int MAX_NUM_ITEMS_IN_PREVIEW = 4;
+    static final int MAX_NUM_ITEMS_IN_PREVIEW = 9;
     private static final int MIN_NUM_ITEMS_IN_PREVIEW = 2;
 
     final float MIN_SCALE = 0.48f;
@@ -68,7 +68,6 @@ public class ClippedFolderIconLayoutRule implements FolderIcon.PreviewLayoutRule
         // We model the preview as a circle of items starting in the appropriate piece of the
         // upper left quadrant (to achieve horizontal and vertical symmetry).
         double theta0 = mIsRtl ? 0 : Math.PI;
-
         // In RTL we go counterclockwise
         int direction = mIsRtl ? 1 : -1;
 

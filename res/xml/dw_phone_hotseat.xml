@@ -41,6 +41,19 @@
 
     <!-- All Apps -->
 
+    <!--在hotseat添加图标，以packageName的方式-->
+    <resolve
+        launcher:container="-101"
+        launcher:screen="2"
+        launcher:x="2"
+        launcher:y="0" >
+        <favorite
+            launcher:packageName="com.android.calendar"
+            launcher:className="com.android.calendar.AllInOneActivity"
+            />
+
+    </resolve>
+
     <resolve
         launcher:container="-101"
         launcher:screen="3"

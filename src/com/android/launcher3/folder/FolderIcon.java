@@ -82,6 +82,7 @@ public class FolderIcon extends FrameLayout implements FolderListener {
     private FolderInfo mInfo;
     @Thunk static boolean sStaticValuesDirty = true;
 
+    // 显示图标的布局及个数
     public static final int NUM_ITEMS_IN_PREVIEW = FeatureFlags.LAUNCHER3_LEGACY_FOLDER_ICON ?
             StackFolderIconLayoutRule.MAX_NUM_ITEMS_IN_PREVIEW :
             ClippedFolderIconLayoutRule.MAX_NUM_ITEMS_IN_PREVIEW;
@@ -391,7 +392,6 @@ public class FolderIcon extends FrameLayout implements FolderListener {
             this.scale = scale;
             this.overlayAlpha = overlayAlpha;
         }
-
         public void update(float transX, float transY, float scale) {
             // We ensure the update will not interfere with an animation on the layout params
             // If the final values differ, we cancel the animation.
@@ -504,7 +504,7 @@ public class FolderIcon extends FrameLayout implements FolderListener {
         private static final float ACCEPT_SCALE_FACTOR = 1.25f;
         private static final float ACCEPT_COLOR_MULTIPLIER = 1.5f;
 
-        // Expressed on a scale from 0 to 255.
+        // Expressed on a scale from 0 to 255. folder的图标颜色
         private static final int BG_OPACITY = 160;
         private static final int MAX_BG_OPACITY = 225;
         private static final int BG_INTENSITY = 245;
