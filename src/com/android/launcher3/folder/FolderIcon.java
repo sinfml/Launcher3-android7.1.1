@@ -27,6 +27,7 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
@@ -564,43 +565,58 @@ public class FolderIcon extends FrameLayout implements FolderListener {
             invalidate();
         }
 
+        // folder背景图标
         public void drawBackground(Canvas canvas, Paint paint) {
             canvas.save();
             canvas.translate(getOffsetX(), getOffsetY());
 
             paint.reset();
-            paint.setStyle(Paint.Style.FILL);
-            paint.setXfermode(null);
-            paint.setAntiAlias(true);
+            paint.setStyle(Paint.Style.FILL);//充满
+//            paint.setXfermode(null);
+//            paint.setAntiAlias(true);
 
-            int alpha = (int) Math.min(MAX_BG_OPACITY, BG_OPACITY * mColorMultiplier);
-            paint.setColor(Color.argb(alpha, BG_INTENSITY, BG_INTENSITY, BG_INTENSITY));
+//            int alpha = (int) Math.min(MAX_BG_OPACITY, BG_OPACITY * mColorMultiplier);
+//            paint.setColor(Color.argb(alpha, BG_INTENSITY, BG_INTENSITY, BG_INTENSITY));
 
             float radius = getScaledRadius();
 
-            canvas.drawCircle(radius, radius, radius, paint);
-            canvas.clipPath(mClipPath, Region.Op.DIFFERENCE);
 
-            paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(Color.TRANSPARENT);
-            paint.setShadowLayer(mStrokeWidth, 0, mStrokeWidth, Color.argb(SHADOW_OPACITY, 0, 0, 0));
-            canvas.drawCircle(radius, radius, radius, paint);
+            paint.setColor(Color.LTGRAY);
+            paint.setAntiAlias(true);
+            paint.setAlpha(100);
+            RectF oval3 = new RectF(0, 0, 228, 228);
+            canvas.drawRoundRect(oval3,40,40,paint);
+
+
+
+//            canvas.drawCircle(radius, radius, radius, paint);
+//            canvas.clipPath(mClipPath, Region.Op.DIFFERENCE);
+//
+//            paint.setStyle(Paint.Style.STROKE);
+//            paint.setColor(Color.TRANSPARENT);
+//            paint.setShadowLayer(mStrokeWidth, 0, mStrokeWidth, Color.argb(SHADOW_OPACITY, 0, 0, 0));
+//            canvas.drawCircle(radius, radius, radius, paint);
 
             canvas.restore();
+
         }
 
+        //背景图标外框
         public void drawBackgroundStroke(Canvas canvas, Paint paint) {
             canvas.save();
             canvas.translate(getOffsetX(), getOffsetY());
 
             paint.reset();
             paint.setAntiAlias(true);
-            paint.setColor(Color.argb(255, BG_INTENSITY, BG_INTENSITY, BG_INTENSITY));
+//            paint.setColor(Color.argb(255, BG_INTENSITY, BG_INTENSITY, BG_INTENSITY));
+            paint.setColor(Color.argb(0, BG_INTENSITY, BG_INTENSITY, BG_INTENSITY));
             paint.setStyle(Paint.Style.STROKE);
             paint.setStrokeWidth(mStrokeWidth);
+//            float radius = getScaledRadius();
+//            canvas.drawCircle(radius, radius, radius - 1, paint);
 
-            float radius = getScaledRadius();
-            canvas.drawCircle(radius, radius, radius - 1, paint);
+            RectF oval3 = new RectF(0, 0, 228, 228);
+            canvas.drawRoundRect(oval3,40,40,paint);
 
             canvas.restore();
         }
